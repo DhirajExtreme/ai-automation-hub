@@ -3,6 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "scripts": {"run": "node src/main.js"},
-  "dependencies": {"@google/genai": "latest", "googleapis": "latest"}
+  "scripts": {
+    "run": "node src/main.js",
+    "verify-adobe": "node src/verify-adobe.js"
+  },
+  "dependencies": {
+    "@google/genai": "latest",
+    "googleapis": "latest"
+  }
 }
