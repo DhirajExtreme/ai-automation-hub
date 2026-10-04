@@ -5,10 +5,12 @@
   "type": "module",
   "scripts": {
     "run": "node src/main.js",
-    "verify-adobe": "node src/verify-adobe.js"
+    "verify-adobe": "node src/verify-adobe.js",
+    "render": "node src/render.js"
   },
   "dependencies": {
     "@google/genai": "latest",
-    "googleapis": "latest"
+    "googleapis": "latest",
+    "playwright": "^1.55.0"
   }
 }
