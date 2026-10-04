@@ -1,4 +1,4 @@
-# AI Automation Hub setup
+# Everyday AI Desk setup
 
 ## 1. Gemini
 
