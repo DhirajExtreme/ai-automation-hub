@@ -160,8 +160,11 @@ export async function renderCarousel(pkg) {
       });
     }
 
-    const pdfBody = htmlPages.map(function(html, i) {
-      return '<section class="pdf-slide">' + html.match(/<main class="slide"[\\s\\S]*?<\\/main>/)?.[0] + '</section>';
+    const pdfBody = htmlPages.map(function(html) {
+      const start = html.indexOf('<main class="slide"');
+      const end = html.indexOf('</main>');
+      if (start < 0 || end < 0) throw new Error('Unable to extract slide markup for PDF');
+      return '<section class="pdf-slide">' + html.slice(start, end + '</main>'.length) + '</section>';
     }).join('');
 
     const pdfHtml = '<!doctype html><html><head><meta charset="utf-8"><style>@page{size:1080px 1350px;margin:0}html,body{margin:0;padding:0}.pdf-slide{width:1080px;height:1350px;break-after:page;page-break-after:always;overflow:hidden}.pdf-slide:last-child{break-after:auto;page-break-after:auto}</style></head><body>' +
