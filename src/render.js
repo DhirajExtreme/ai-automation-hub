@@ -69,7 +69,7 @@ function baseHtml(css, theme, body) {
 function topbar(theme, date) {
   return '<div class="topbar">' +
     '<div class="brand">' + logoSvg(theme) +
-      '<div><div class="brand-name">AI AUTOMATION HUB</div><div class="tagline">AUTOMATE • LEARN • GROW</div></div>' +
+      '<div><div class="brand-name">EVERYDAY AI DESK</div><div class="tagline">AUTOMATE • LEARN • GROW</div></div>' +
     '</div>' +
     '<div class="badge">AI DAILY · ' + escapeHtml(date) + '</div>' +
   '</div>';
@@ -83,7 +83,7 @@ function coverSlide(css, theme, pkg) {
       '<div class="cover-sub">Five major developments in artificial intelligence and technology, curated for builders, creators and business leaders.</div>' +
       '<div class="date-pill">CURATED ' + escapeHtml(pkg.date) + '</div>' +
     '</div>' + decorativeMarkup() +
-    '<div class="footer"><div class="footer-left"><span class="footer-dot"></span>REAL NEWS · CLEAR INSIGHTS</div><div class="footer-right">AI AUTOMATION HUB</div></div>';
+    '<div class="footer"><div class="footer-left"><span class="footer-dot"></span>REAL NEWS · CLEAR INSIGHTS</div><div class="footer-right">EVERYDAY AI DESK</div></div>';
   return baseHtml(css, theme, body);
 }
 
@@ -101,7 +101,7 @@ function storySlide(css, theme, pkg, story, index) {
       '<div class="source"><span>Source</span><strong>' + escapeHtml(story.sourceName) + '</strong></div>' +
     '</section>' +
     decorativeMarkup() +
-    '<div class="footer"><div class="footer-left"><span class="footer-dot"></span>INDEPENDENT NEWS EXPLAINER</div><div class="footer-right">AI AUTOMATION HUB</div></div>';
+    '<div class="footer"><div class="footer-left"><span class="footer-dot"></span>INDEPENDENT NEWS EXPLAINER</div><div class="footer-right">EVERYDAY AI DESK</div></div>';
   return baseHtml(css, theme, body);
 }
 
@@ -116,7 +116,7 @@ function finalSlide(css, theme, pkg) {
       '<div class="cover-title" style="font-size:68px">WHAT TO <span>WATCH NEXT</span></div>' +
       '<div class="small-note">The five signals worth carrying into your day.</div>' +
       '<div class="final-list">' + items + '</div>' +
-      '<div class="cta">FOLLOW AI AUTOMATION HUB</div>' +
+      '<div class="cta">FOLLOW EVERYDAY AI DESK</div>' +
     '</div>' + decorativeMarkup() +
     '<div class="footer"><div class="footer-left"><span class="footer-dot"></span>AUTOMATE · LEARN · GROW</div><div class="footer-right">SEE YOU TOMORROW</div></div>';
   return baseHtml(css, theme, body);
