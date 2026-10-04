@@ -3,23 +3,13 @@ name: Daily AI News
 on:
   workflow_dispatch:
     inputs:
-      dry_run:
-        description: 'Research/editorial only, no Adobe render'
+      render_carousel:
+        description: 'Render the 7-slide HTML/CSS carousel'
         required: false
         default: true
         type: boolean
-      verify_adobe:
-        description: 'Verify Adobe OAuth and list tagged documents'
-        required: false
-        default: false
-        type: boolean
-      render_adobe:
-        description: 'Render the 7-page Adobe carousel'
-        required: false
-        default: false
-        type: boolean
       publish_instagram:
-        description: 'Publish the generated carousel to Instagram'
+        description: 'Publish carousel to Instagram'
         required: false
         default: false
         type: boolean
@@ -37,22 +27,18 @@ jobs:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
 
-      ADOBE_CLIENT_ID: ${{ secrets.ADOBE_CLIENT_ID }}
-      ADOBE_CLIENT_SECRET: ${{ secrets.ADOBE_CLIENT_SECRET }}
-      ADOBE_SCOPE: ${{ vars.ADOBE_SCOPE }}
-      ADOBE_TEMPLATE_ID: ${{ secrets.ADOBE_TEMPLATE_ID }}
-
       INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
       INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
       INSTAGRAM_API_VERSION: 'v24.0'
+      PUBLIC_ASSET_BASE_URL: ${{ vars.PUBLIC_ASSET_BASE_URL }}
 
       YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
       YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
       YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
       YOUTUBE_PRIVACY: 'private'
 
-      DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'true' }}
-      RENDER_ADOBE: ${{ github.event_name == 'workflow_dispatch' && inputs.render_adobe || 'false' }}
+      DRY_RUN: 'true'
+      RENDER_CAROUSEL: ${{ github.event_name == 'workflow_dispatch' && inputs.render_carousel || 'true' }}
       PUBLISH_INSTAGRAM: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_instagram || 'false' }}
 
     steps:
@@ -63,13 +49,12 @@ jobs:
           node-version: 22
           cache: npm
 
-      - run: npm install
+      - run: npm install --no-audit --no-fund
 
-      - name: Verify Adobe Express connection
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.verify_adobe }}
-        run: npm run verify-adobe
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
 
-      - name: Generate daily editorial package
+      - name: Generate editorial package and carousel
         run: npm run run
 
       - uses: actions/upload-artifact@v4
