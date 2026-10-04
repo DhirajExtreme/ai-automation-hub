@@ -1,4 +1,4 @@
-# AI Automation Hub - Daily AI News Engine
+# Everyday AI Desk - Daily AI News Engine
 
 Fully automated daily AI news content pipeline for Instagram and YouTube.
 
