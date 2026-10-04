@@ -2,17 +2,12 @@ import fs from 'node:fs/promises';
 import { collectResearch } from './research.js';
 import { generateEditorialPackage } from './gemini.js';
 import { validatePackage } from './validate.js';
-import { createAdobeVariation, getTaggedDocument, pollAdobe } from './adobe.js';
-import {
-  buildAdobeCarouselRequest,
-  extractAdobeImageUrls,
-  validateAdobeTagContract
-} from './carousel.js';
+import { renderCarousel } from './render.js';
 import { publishCarousel } from './instagram.js';
 
 const dryRun = process.env.DRY_RUN !== 'false';
-const renderAdobe = process.env.RENDER_ADOBE === 'true';
-const publishInstagram = process.env.PUBLISH_INSTAGRAM === 'true';
+const renderEnabled = process.env.RENDER_CAROUSEL !== 'false';
+const publishInstagramEnabled = process.env.PUBLISH_INSTAGRAM === 'true';
 const outputDir = 'artifacts';
 
 const research = await collectResearch();
@@ -38,52 +33,36 @@ await fs.writeFile(
 
 console.log('Validated ' + pkg.stories.length + ' stories for ' + pkg.date);
 console.log('Dry run: ' + dryRun);
-console.log('Adobe render: ' + renderAdobe);
-console.log('Instagram publish: ' + publishInstagram);
+console.log('HTML/CSS carousel render: ' + renderEnabled);
+console.log('Instagram publish: ' + publishInstagramEnabled);
 
-if (!dryRun && renderAdobe) {
-  const detail = await getTaggedDocument(process.env.ADOBE_TEMPLATE_ID);
-  validateAdobeTagContract(detail);
+let manifest = null;
 
-  const request = buildAdobeCarouselRequest(pkg);
-  const submitted = await createAdobeVariation(request);
-  console.log('Adobe job started: ' + submitted.jobId);
-
-  const result = await pollAdobe(submitted.statusUrl);
-  await fs.writeFile(
-    outputDir + '/adobe-variation.json',
-    JSON.stringify(result, null, 2)
-  );
-
-  if (result.status === 'failed') {
-    throw new Error('Adobe variation failed: ' + JSON.stringify(result.errors || result));
-  }
-
-  const imageUrls = extractAdobeImageUrls(result);
-  if (imageUrls.length !== 7) {
-    throw new Error('Expected 7 Adobe carousel images, received ' + imageUrls.length);
-  }
-
-  await fs.writeFile(
-    outputDir + '/instagram-media.json',
-    JSON.stringify(imageUrls, null, 2)
-  );
-
-  if (publishInstagram) {
-    const published = await publishCarousel(
-      imageUrls.map(function(item) { return item.url; }),
-      pkg.instagram.caption
-    );
-    await fs.writeFile(
-      outputDir + '/instagram-publish.json',
-      JSON.stringify(published, null, 2)
-    );
-    console.log('Instagram carousel published: ' + (published.id || 'ok'));
-  }
+if (renderEnabled) {
+  manifest = await renderCarousel(pkg);
+  console.log('Rendered ' + manifest.slideCount + ' carousel slides using theme: ' + manifest.theme.name);
 }
 
-if (!dryRun && !renderAdobe) {
-  throw new Error(
-    'LIVE mode requires RENDER_ADOBE=true. This prevents accidental publishing without an Adobe render.'
+if (publishInstagramEnabled) {
+  if (!manifest) throw new Error('Instagram publishing requires RENDER_CAROUSEL=true');
+
+  const baseUrl = process.env.PUBLIC_ASSET_BASE_URL;
+  if (!baseUrl) {
+    throw new Error(
+      'PUBLIC_ASSET_BASE_URL is required for Instagram publishing. ' +
+      'Meta must be able to fetch public HTTPS image URLs.'
+    );
+  }
+
+  const imageUrls = manifest.files.map(function(filePath) {
+    const relative = filePath.replaceAll('\\\\', '/');
+    return baseUrl.replace(/\/$/, '') + '/' + relative.replace(/^artifacts\//, '');
+  });
+
+  const published = await publishCarousel(imageUrls, pkg.instagram.caption);
+  await fs.writeFile(
+    outputDir + '/instagram-publish.json',
+    JSON.stringify(published, null, 2)
   );
+  console.log('Instagram carousel published: ' + (published.id || 'ok'));
 }
