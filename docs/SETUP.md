@@ -1,82 +1,90 @@
-# Setup checklist
+# AI Automation Hub setup
 
-## Adobe Express master template for AI Automation Hub
+## 1. Gemini
 
-The supplied background image has been uploaded to the connected Adobe Creative Cloud storage as image(9).png.
+Repository variable:
+- GEMINI_MODEL
 
-Use one master Adobe Express document for the 7-page Instagram carousel.
+Repository secret:
+- GEMINI_API_KEY
 
-**Canvas:** 1080 x 1350, 4:5 portrait.
+The Gemini consumer subscription and Gemini API billing are separate.
 
-**Background:** place image(9).png as a full-bleed background on all 7 pages. Keep the ED logo and technology artwork intact.
+## 2. HTML/CSS carousel renderer
 
-**Story text panel:** on pages 2 through 6, add one large dark translucent rounded rectangle in the center. This panel should cover the large center wording already present in the background and become the readable zone for dynamic news text. Keep the top logo/header and lower robotic-hand area visible.
+The Adobe Express API has been removed from the runtime flow.
 
-**Static brand elements:** keep the ED logo, AI AUTOMATION HUB title, and AUTOMATE • LEARN • GROW tagline untagged.
+The renderer creates all 7 carousel pages from:
+- templates/carousel.css
+- config/themes.json
+- src/render.js
 
-### Exact tags
+The daily package selects one of the 10 themes. Set CAROUSEL_THEME locally to force a specific theme.
 
-Page 1:
-- cover_date
-- cover_title
+The design canvas is 1080 x 1350 (4:5).
 
-Pages 2-6:
-- story_number
-- story_headline
-- story_summary
-- story_why
-- story_source
+The renderer creates:
+- artifacts/carousel/slide-01.jpg through slide-07.jpg
+- artifacts/ai-automation-hub-daily.pdf
+- artifacts/carousel-manifest.json
 
-Reuse the same story tag names on each story page. The runtime uses pageOverrides so one API call fills all five story pages.
+The layout is original HTML/CSS and uses no external image dependency.
 
-Page 7:
-- final_takeaway
-- final_cta
+## 3. Adobe inspiration library
 
-### Recommended story-page hierarchy
+The 10 themes were selected from Adobe Express technology-focused design searches for:
+- AI and futuristic tech
+- cybersecurity
+- robotics
+- cloud/data
+- coding/developer
+- quantum
+- semiconductors
+- fintech
+- AI agents/automation
+- futuristic innovation
 
-1. Story number, such as 01/05
-2. Headline, maximum about 2 to 3 lines
-3. Summary, 2 to 4 short lines
-4. Why it matters, 2 to 4 short lines
-5. Source name, small footer text
+Only visual cues such as dark backgrounds, neon accents, grids, glass panels and technical geometry are carried into the original CSS system.
 
-Do not put the full source URL inside the artwork.
+## 4. Instagram
 
-### Runtime behavior
+Secrets:
+- INSTAGRAM_USER_ID
+- INSTAGRAM_ACCESS_TOKEN
 
-The GitHub Action now supports:
-- research and Gemini editorial generation
-- Adobe tagged-document validation
-- one asynchronous Adobe Create Variation request for all 7 pages
-- JPEG renditions for pages 1-7
-- a persisted Express document output
-- a 7-page PDF output
-- optional Instagram carousel publication
+Variable:
+- PUBLIC_ASSET_BASE_URL
 
-Adobe's current Create Variation API supports typed mappings, per-page overrides, and image/document/PDF/video outputs. It is asynchronous and currently beta.
+PUBLIC_ASSET_BASE_URL must point to a public HTTPS location that serves the generated JPEG files.
 
-### Render test
+The planned publication flow is:
 
-Run the workflow manually with:
-- dry_run = false
-- verify_adobe = true
-- render_adobe = true
-- publish_instagram = false
+HTML/CSS render -> public asset hosting -> 7 Instagram media containers -> carousel container -> publish.
 
-This tests research -> template validation -> 7-page Adobe render without publishing.
+Publishing is disabled by default.
 
-### Scheduling
+## 5. YouTube
 
-The daily 08:00 Asia/Kolkata schedule currently keeps Adobe rendering off until the master template and beta access are confirmed.
+The existing YouTube OAuth uploader remains in the project:
+- YOUTUBE_CLIENT_ID
+- YOUTUBE_CLIENT_SECRET
+- YOUTUBE_REFRESH_TOKEN
 
-After the first successful render test, change the scheduled environment so RENDER_ADOBE=true. After an end-to-end Meta fetch test succeeds, enable Instagram publishing.
+The editorial engine already creates a 40-60 second script and metadata. A separate video rendering stage can feed the existing uploader.
 
-## Instagram
+## 6. First trial
 
-The planned path is:
-Adobe 7-page render -> 7 image URLs -> 7 Instagram item containers -> carousel container -> publish.
+Run the GitHub workflow manually with:
 
-## YouTube
+render_carousel = true
+publish_instagram = false
 
-The next stage is a separate animated Express master document for the Short. Adobe's beta API supports video outputs for pages that support video export, but the video surface has beta limitations.
+The first successful run should produce 7 JPEG pages plus the PDF as workflow artifacts.
+
+Do not enable Instagram publishing until the rendered pages are visually checked and a public asset host is configured.
+
+## 7. Daily schedule
+
+GitHub Actions runs daily at 08:00 Asia/Kolkata.
+
+The scheduled run renders the carousel automatically and keeps Instagram publishing disabled until you explicitly enable it in the workflow.
