@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "note": "Original HTML/CSS theme system. Adobe Express template searches are used only as visual inspiration. No Adobe template artwork is copied into runtime assets.",
+  "source": "Adobe Express technology, AI, cybersecurity, robotics, cloud, coding, fintech and futuristic template collections",
+  "themes": [
+    {
+      "id": "neon-horizon",
+      "name": "Neon AI Horizon",
+      "inspiredBy": "Dark Blue Technology Infographic",
+      "palette": {
+        "bgA": "#050B18",
+        "bgB": "#082B4A",
+        "accent": "#24D8FF",
+        "accent2": "#B7FF3C",
+        "panel": "#071426E8"
+      }
+    },
+    {
+      "id": "cyber-shield",
+      "name": "Cyber Shield Grid",
+      "inspiredBy": "Blue And White Cyber Security Instagram Post Portrait",
+      "palette": {
+        "bgA": "#05070D",
+        "bgB": "#102642",
+        "accent": "#5FC7FF",
+        "accent2": "#7CFF68",
+        "panel": "#07101DEB"
+      }
+    },
+    {
+      "id": "robotic-pulse",
+      "name": "Robotic Pulse",
+      "inspiredBy": "Blue And White Potential Of Tomorrow Robotic Innovation Promotion Instagram Story",
+      "palette": {
+        "bgA": "#061017",
+        "bgB": "#203442",
+        "accent": "#E6F3FF",
+        "accent2": "#00E5FF",
+        "panel": "#09151EEA"
+      }
+    },
+    {
+      "id": "cloud-matrix",
+      "name": "Cloud Data Matrix",
+      "inspiredBy": "Blue Modern Retro Cloud Computing Service Instagram Ad",
+      "palette": {
+        "bgA": "#06141E",
+        "bgB": "#123A58",
+        "accent": "#8FE8FF",
+        "accent2": "#72FFB2",
+        "panel": "#071B2AE8"
+      }
+    },
+    {
+      "id": "developer-terminal",
+      "name": "Developer Terminal",
+      "inspiredBy": "Blue Technology LinkedIn Post + coding templates",
+      "palette": {
+        "bgA": "#040908",
+        "bgB": "#10231C",
+        "accent": "#7DFF59",
+        "accent2": "#00D7FF",
+        "panel": "#06110DEB"
+      }
+    },
+    {
+      "id": "quantum-violet",
+      "name": "Quantum Violet",
+      "inspiredBy": "Black and Violet Technology Infographic",
+      "palette": {
+        "bgA": "#0A0718",
+        "bgB": "#24133E",
+        "accent": "#A66CFF",
+        "accent2": "#54E1FF",
+        "panel": "#100B1DEB"
+      }
+    },
+    {
+      "id": "silicon-flux",
+      "name": "Silicon Flux",
+      "inspiredBy": "Dark Blue Technology Infographic + chip/technology visuals",
+      "palette": {
+        "bgA": "#080D16",
+        "bgB": "#192B43",
+        "accent": "#62E9FF",
+        "accent2": "#FFC85A",
+        "panel": "#0A1423EC"
+      }
+    },
+    {
+      "id": "fintech-circuit",
+      "name": "Fintech Circuit",
+      "inspiredBy": "Blue and White Fintech Solutions Instagram Story",
+      "palette": {
+        "bgA": "#06100F",
+        "bgB": "#15352F",
+        "accent": "#35E0C0",
+        "accent2": "#B7FF53",
+        "panel": "#081813EB"
+      }
+    },
+    {
+      "id": "ai-magenta",
+      "name": "AI Magenta Lab",
+      "inspiredBy": "Purple Futuristic AI Tools + AI technology social posts",
+      "palette": {
+        "bgA": "#100715",
+        "bgB": "#2A123D",
+        "accent": "#FF54D8",
+        "accent2": "#71FAFF",
+        "panel": "#150A20EC"
+      }
+    },
+    {
+      "id": "holographic-future",
+      "name": "Holographic Future",
+      "inspiredBy": "Black & Green Tech Pinterest Post + futuristic technology templates",
+      "palette": {
+        "bgA": "#060918",
+        "bgB": "#20123C",
+        "accent": "#7B7BFF",
+        "accent2": "#00F5D4",
+        "panel": "#0B0D22ED"
+      }
+    }
+  ]
+}
