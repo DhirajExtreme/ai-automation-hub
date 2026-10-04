@@ -2,38 +2,44 @@
 
 Fully automated daily AI news content pipeline for Instagram and YouTube.
 
-## Target pipeline
+## Pipeline
 
-GitHub Actions -> News/RSS -> Gemini -> editorial JSON -> Adobe Express API -> Instagram carousel + YouTube Short -> notifications
+GitHub Actions -> News/RSS -> Gemini -> validation -> original HTML/CSS carousel renderer -> Instagram publishing + YouTube workflow
 
-## Current status
+No Adobe API is required at runtime.
 
-- Scheduler: GitHub Actions
-- Editorial AI: Gemini API
-- Adobe: Express API adapter (requires Adobe Express API beta access + API credentials)
-- Instagram: official Instagram API with Instagram Login
-- YouTube: YouTube Data API v3
-- Notification: optional Telegram
-- No Buffer / n8n / Make / Zapier required
+## Design system
+
+The carousel uses 10 original HTML/CSS visual themes inspired by current Adobe Express technology, AI, cybersecurity, robotics, cloud, coding, fintech and futuristic template aesthetics. The project does not copy Adobe template artwork into runtime assets.
+
+Canvas:
+- Instagram carousel: 1080x1350
+- 7 slides per daily package
+
+The theme rotates deterministically by date and can be overridden with CAROUSEL_THEME.
 
 ## Daily output
 
-1. Seven-slide Instagram carousel, 1080x1350
-2. 40-60 second YouTube Short, 1080x1920
+1. Seven-slide Instagram carousel
+2. 40-60 second YouTube Short editorial script
 3. Instagram caption
-4. YouTube title, description and tags
-5. Source manifest for every story
+4. YouTube metadata
+5. Source manifest
+6. Theme manifest
 
-## Safety/quality gates
+## Quality gates
 
 - Exactly 5 stories
 - Major developments only
-- No duplicate stories
+- No duplicates
 - Source attribution required
-- Reject unsupported claims
-- Prefer primary sources and reputable reporting
-- Do not publish if fewer than 5 stories pass validation
+- No invented facts
+- No publication when required inputs are missing
+
+## Runtime publishing
+
+Instagram's publishing API requires public HTTPS image URLs. The HTML/CSS renderer therefore produces the images first, while publication remains disabled until PUBLIC_ASSET_BASE_URL points to a public asset host.
 
 ## Setup
 
-See `docs/SETUP.md`.
+See docs/SETUP.md.
