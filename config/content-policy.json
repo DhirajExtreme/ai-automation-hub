@@ -1,0 +1,20 @@
+{
+  "brand": "AI Automation Hub",
+  "language": "English",
+  "timezone": "Asia/Kolkata",
+  "dailyStoryCount": 5,
+  "carouselSlides": 7,
+  "instagramSize": "1080x1350",
+  "youtubeSize": "1080x1920",
+  "youtubeDurationSeconds": {"min": 40, "max": 60},
+  "selection": {
+    "majorDevelopmentsOnly": true,
+    "balancedMix": true,
+    "avoidDuplicates": true,
+    "requireSource": true,
+    "preferPrimarySources": true,
+    "noInventedFacts": true
+  },
+  "categories": ["AI models", "agents", "AI products", "startups/funding", "AI infrastructure", "major company developments"],
+  "tone": "professional, concise, conversational, non-clickbait"
+}
