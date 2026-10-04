@@ -9,5 +9,15 @@
     "cta": "Subscribe to Everyday AI Desk on YouTube"
   },
   "profileBio": "Everyday AI Desk tests real workflows step by step using tools such as ChatGPT, Gemini, Claude, Microsoft 365, Google Workspace, Notion",
-  "crossPlatformCta": "Follow @everydayaidesk on Instagram • Subscribe to Everyday AI Desk on YouTube"
+  "crossPlatformCta": "Follow @everydayaidesk on Instagram, X and Threads • Subscribe to Everyday AI Desk on YouTube",
+  "x": {
+    "handle": "@everydayaidesk",
+    "displayName": "EverydayAIDesk",
+    "cta": "Follow @everydayaidesk on X"
+  },
+  "threads": {
+    "handle": "@everydayaidesk",
+    "displayName": "EverydayAIDesk",
+    "cta": "Follow @everydayaidesk on Threads"
+  }
 }
