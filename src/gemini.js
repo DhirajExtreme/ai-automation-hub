@@ -12,12 +12,12 @@ export async function generateEditorialPackage(researchText) {
 CURRENT RESEARCH MATERIAL:
 ${researchText}`;
   const response = await ai.models.generateContent({
-    model: process.env.GEMINI_MODEL || 'gemini-2.5-pro',
+    model: process.env.GEMINI_MODEL || 'gemini-3.8-flash',
     contents: prompt,
     config: {
       responseMimeType: 'application/json',
       responseSchema: OUTPUT_SCHEMA,
-      temperature: 0.2
+      thinkingConfig: { thinkingLevel: 'medium' }
     }
   });
   if (!response.text) throw new Error('Gemini returned no text');
