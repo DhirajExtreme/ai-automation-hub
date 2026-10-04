@@ -4,12 +4,22 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'Run without publishing'
+        description: 'Research/editorial only, no Adobe render'
         required: false
         default: true
         type: boolean
       verify_adobe:
         description: 'Verify Adobe OAuth and list tagged documents'
+        required: false
+        default: false
+        type: boolean
+      render_adobe:
+        description: 'Render the 7-page Adobe carousel'
+        required: false
+        default: false
+        type: boolean
+      publish_instagram:
+        description: 'Publish the generated carousel to Instagram'
         required: false
         default: false
         type: boolean
@@ -42,6 +52,8 @@ jobs:
       YOUTUBE_PRIVACY: 'private'
 
       DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'true' }}
+      RENDER_ADOBE: ${{ github.event_name == 'workflow_dispatch' && inputs.render_adobe || 'false' }}
+      PUBLISH_INSTAGRAM: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_instagram || 'false' }}
 
     steps:
       - uses: actions/checkout@v4
