@@ -33,23 +33,23 @@ function pickTheme(themes, dateValue) {
     if (found) return found;
   }
 
-  let normalizedDate = String(dateValue || '').trim();
-  const isoMatch = normalizedDate.match(/^(\\d{4}-\\d{2}-\\d{2})$/);
-  if (isoMatch) {
-    normalizedDate = isoMatch[1];
-  } else {
-    const parsed = new Date(normalizedDate);
-    if (!Number.isNaN(parsed.getTime())) {
-      normalizedDate = parsed.toISOString().slice(0, 10);
-    }
-  }
+  const parsed = new Date(String(dateValue || ''));
+  const safeDate = Number.isNaN(parsed.getTime()) ? new Date() : parsed;
+  const dateIndex = dayOfYear(new Date(Date.UTC(
+    safeDate.getUTCFullYear(),
+    safeDate.getUTCMonth(),
+    safeDate.getUTCDate()
+  )));
 
-  const parsedDate = new Date(normalizedDate + 'T00:00:00Z');
-  const safeDate = Number.isNaN(parsedDate.getTime()) ? new Date() : parsedDate;
-  const index = dayOfYear(safeDate) % themes.length;
+  // Use the GitHub Actions run number as an additional rotation offset.
+  // Scheduled daily runs therefore move to a new theme each day, while
+  // repeated same-day test runs also exercise different themes.
+  const runNumber = Number.parseInt(process.env.GITHUB_RUN_NUMBER || '0', 10);
+  const runOffset = Number.isFinite(runNumber) && runNumber > 0 ? runNumber - 1 : 0;
+  const index = (dateIndex + runOffset) % themes.length;
+
   return themes[index];
 }
-
 function themeVars(theme) {
   const p = theme.palette;
   return '--bgA:' + p.bgA + ';--bgB:' + p.bgB + ';--accent:' + p.accent +
