@@ -105,7 +105,7 @@ function storySlide(css, theme, pkg, story, index) {
   return baseHtml(css, theme, body);
 }
 
-function finalSlide(css, theme, pkg) {
+function finalSlide(css, theme, pkg, social) {
   const items = pkg.stories.map(function(story, i) {
     return '<div class="final-item"><div class="final-index">0' + (i+1) + '</div><div class="final-text">' +
       escapeHtml(clampText(story.headline, 92)) + '</div></div>';
@@ -156,7 +156,7 @@ export async function renderCarousel(pkg) {
     for (let i=0; i<pkg.stories.length; i++) {
       htmlPages.push(storySlide(css,theme,pkg,pkg.stories[i],i+1));
     }
-    htmlPages.push(finalSlide(css,theme,pkg));
+    htmlPages.push(finalSlide(css,theme,pkg,social));
 
     for (let i=0; i<htmlPages.length; i++) {
       await page.setContent(htmlPages[i], {waitUntil:'load'});
