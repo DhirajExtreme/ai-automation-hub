@@ -9,7 +9,7 @@
     "render": "node src/render.js"
   },
   "dependencies": {
-    "@google/genai": "latest",
+    "@google/genai": "2.24.0",
     "googleapis": "latest",
     "playwright": "^1.55.0"
   }
