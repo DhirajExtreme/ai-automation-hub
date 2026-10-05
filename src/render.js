@@ -116,19 +116,26 @@ function finalSlide(css, theme, pkg) {
       '<div class="cover-title" style="font-size:68px">WHAT TO <span>WATCH NEXT</span></div>' +
       '<div class="small-note">The five signals worth carrying into your day.</div>' +
       '<div class="final-list">' + items + '</div>' +
-      '<div class="cta">FOLLOW EVERYDAY AI DESK</div>' +
+      '<div class="cta cross-cta">' +
+        '<div>INSTAGRAM <strong>' + escapeHtml(social.instagram.handle) + '</strong></div>' +
+        '<div>X <strong>' + escapeHtml(social.x.handle) + '</strong></div>' +
+        '<div>THREADS <strong>' + escapeHtml(social.threads.handle) + '</strong></div>' +
+        '<div>YOUTUBE <strong>' + escapeHtml(social.youtube.channelName) + '</strong></div>' +
+      '</div>' +
     '</div>' + decorativeMarkup() +
     '<div class="footer"><div class="footer-left"><span class="footer-dot"></span>AUTOMATE · LEARN · GROW</div><div class="footer-right">SEE YOU TOMORROW</div></div>';
   return baseHtml(css, theme, body);
 }
 
 export async function renderCarousel(pkg) {
-  const [css, themeConfig] = await Promise.all([
+  const [css, themeConfig, socialConfig] = await Promise.all([
     fs.readFile('templates/carousel.css','utf8'),
-    fs.readFile('config/themes.json','utf8').then(JSON.parse)
+    fs.readFile('config/themes.json','utf8').then(JSON.parse),
+    fs.readFile('config/social.json','utf8').then(JSON.parse)
   ]);
 
   const themes = themeConfig.themes;
+  const social = socialConfig;
   if (!Array.isArray(themes) || themes.length < 10) {
     throw new Error('At least 10 carousel themes are required');
   }
