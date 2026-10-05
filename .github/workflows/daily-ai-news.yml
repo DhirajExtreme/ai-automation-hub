@@ -1,9 +1,6 @@
 name: Daily AI News
 
 on:
-  push:
-    paths:
-      - 'trial-trigger.txt'
   workflow_dispatch:
     inputs:
       render_carousel:
