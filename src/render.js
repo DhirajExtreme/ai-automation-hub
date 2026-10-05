@@ -26,13 +26,27 @@ function dayOfYear(date) {
   return Math.floor((date - start) / 86400000);
 }
 
-function pickTheme(themes, isoDate) {
+function pickTheme(themes, dateValue) {
   const override = process.env.CAROUSEL_THEME;
   if (override) {
     const found = themes.find(t => t.id === override || t.name === override);
     if (found) return found;
   }
-  const index = dayOfYear(new Date(isoDate + 'T00:00:00Z')) % themes.length;
+
+  let normalizedDate = String(dateValue || '').trim();
+  const isoMatch = normalizedDate.match(/^(\\d{4}-\\d{2}-\\d{2})$/);
+  if (isoMatch) {
+    normalizedDate = isoMatch[1];
+  } else {
+    const parsed = new Date(normalizedDate);
+    if (!Number.isNaN(parsed.getTime())) {
+      normalizedDate = parsed.toISOString().slice(0, 10);
+    }
+  }
+
+  const parsedDate = new Date(normalizedDate + 'T00:00:00Z');
+  const safeDate = Number.isNaN(parsedDate.getTime()) ? new Date() : parsedDate;
+  const index = dayOfYear(safeDate) % themes.length;
   return themes[index];
 }
 
