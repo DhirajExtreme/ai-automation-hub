@@ -120,7 +120,7 @@ function stripXml(value) {
     .replace(/&lt;/gi, '<')
     .replace(/&gt;/gi, '>')
     .replace(/&nbsp;/gi, ' ')
-    .replace(/\\s+/g, ' ')
+    .replace(/\s+/g, ' ')
     .trim();
 }
 
@@ -134,27 +134,27 @@ function extractFallbackStories(researchText) {
   const items = [];
 
   for (const section of sections) {
-    const feedUrl = firstMatch(section, /^(https?:\\/\\/[^\\s]+)/i);
+    const feedUrl = firstMatch(section, /^(https?:\/\/[^\s]+)/i);
     const body = section.slice(feedUrl.length);
 
-    const blocks = body.match(/<(?:item|entry)\\b[\\s\\S]*?<\\/(?:item|entry)>/gi) || [];
+    const blocks = body.match(/<(?:item|entry)\b[\s\S]*?<\/(?:item|entry)>/gi) || [];
     for (const block of blocks) {
-      const title = stripXml(firstMatch(block, /<title[^>]*>([\\s\\S]*?)<\\/title>/i));
+      const title = stripXml(firstMatch(block, /<title[^>]*>([\s\S]*?)<\/title>/i));
       const description = stripXml(
-        firstMatch(block, /<(?:description|summary|content:encoded)[^>]*>([\\s\\S]*?)<\\/(?:description|summary|content:encoded)>/i)
+        firstMatch(block, /<(?:description|summary|content:encoded)[^>]*>([\s\S]*?)<\/(?:description|summary|content:encoded)>/i)
       );
 
-      let link = firstMatch(block, /<link[^>]*href=["'](https?:\\/\\/[^"']+)["']/i);
-      if (!link) link = firstMatch(block, /<link[^>]*>(https?:\\/\\/[^<\\s]+)/i);
+      let link = firstMatch(block, /<link[^>]*href=["'](https?:\/\/[^"']+)["']/i);
+      if (!link) link = firstMatch(block, /<link[^>]*>(https?:\/\/[^<\s]+)/i);
 
       if (!title || !link) continue;
 
-      const key = title.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\\s+/g, ' ').trim();
+      const key = title.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim();
       if (!key || items.some(item => item.key === key)) continue;
 
       let sourceName = 'Source';
       try {
-        sourceName = new URL(feedUrl).hostname.replace(/^www\\./, '');
+        sourceName = new URL(feedUrl).hostname.replace(/^www\./, '');
       } catch {}
 
       items.push({
