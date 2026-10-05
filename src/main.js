@@ -9,9 +9,27 @@ const dryRun = process.env.DRY_RUN !== 'false';
 const renderEnabled = process.env.RENDER_CAROUSEL !== 'false';
 const publishInstagramEnabled = process.env.PUBLISH_INSTAGRAM === 'true';
 const outputDir = 'artifacts';
+const social = JSON.parse(await fs.readFile('config/social.json', 'utf8'));
+const crossPlatformCta = social.crossPlatformCta;
+
+function enforceCrossPlatformCta(pkg) {
+  if (pkg?.instagram) {
+    const caption = String(pkg.instagram.caption || '').trim();
+    if (!caption.includes(crossPlatformCta)) {
+      pkg.instagram.caption = caption + (caption ? '\\n\\n' : '') + crossPlatformCta;
+    }
+  }
+  if (pkg?.youtube) {
+    const description = String(pkg.youtube.description || '').trim();
+    if (!description.includes(crossPlatformCta)) {
+      pkg.youtube.description = description + (description ? '\\n\\n' : '') + crossPlatformCta;
+    }
+  }
+  return pkg;
+}
 
 const research = await collectResearch();
-const pkg = await generateEditorialPackage(research);
+const pkg = enforceCrossPlatformCta(await generateEditorialPackage(research));
 validatePackage(pkg);
 
 await fs.mkdir(outputDir, {recursive:true});
