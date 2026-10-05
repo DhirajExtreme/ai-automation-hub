@@ -41,12 +41,18 @@ function pickTheme(themes, dateValue) {
     safeDate.getUTCDate()
   )));
 
-  // Use the GitHub Actions run number as an additional rotation offset.
-  // Scheduled daily runs therefore move to a new theme each day, while
-  // repeated same-day test runs also exercise different themes.
+  // Scheduled production runs are strictly date-based, so the theme rotates
+  // one step per calendar day through all configured themes. Manual/push test
+  // runs use their GitHub run number so repeated tests on the same day can
+  // exercise different themes without changing the daily production sequence.
   const runNumber = Number.parseInt(process.env.GITHUB_RUN_NUMBER || '0', 10);
-  const runOffset = Number.isFinite(runNumber) && runNumber > 0 ? runNumber : 0;
-  const index = (dateIndex + runOffset) % themes.length;
+  const eventName = process.env.GITHUB_EVENT_NAME || '';
+  const hasRunNumber = Number.isFinite(runNumber) && runNumber > 0;
+  const index = eventName === 'schedule'
+    ? dateIndex % themes.length
+    : hasRunNumber
+      ? (runNumber - 1) % themes.length
+      : dateIndex % themes.length;
 
   return themes[index];
 }
