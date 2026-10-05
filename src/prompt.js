@@ -13,6 +13,7 @@ Rules:
 - Clearly separate confirmed facts from interpretation.
 - Write concise Instagram-ready copy.
 - Produce a YouTube Short script totaling roughly 40-60 seconds.
+- Include this exact cross-platform CTA in the Instagram caption and YouTube description: "Follow @everydayaidesk on Instagram, X and Threads • Subscribe to Everyday AI Desk on YouTube".
 - Return JSON only matching the supplied schema.`;
 
 export const OUTPUT_SCHEMA = {
