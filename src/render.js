@@ -45,7 +45,7 @@ function pickTheme(themes, dateValue) {
   // Scheduled daily runs therefore move to a new theme each day, while
   // repeated same-day test runs also exercise different themes.
   const runNumber = Number.parseInt(process.env.GITHUB_RUN_NUMBER || '0', 10);
-  const runOffset = Number.isFinite(runNumber) && runNumber > 0 ? runNumber - 1 : 0;
+  const runOffset = Number.isFinite(runNumber) && runNumber > 0 ? runNumber : 0;
   const index = (dateIndex + runOffset) % themes.length;
 
   return themes[index];
