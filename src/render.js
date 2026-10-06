@@ -82,8 +82,24 @@ function decorativeMarkup() {
 
 function baseHtml(css, theme, body) {
   return '<!doctype html><html><head><meta charset="utf-8"><style>' + css +
-    '</style></head><body><main class="slide" style="' + themeVars(theme) + '">' +
+    '</style></head><body><main class="slide theme-' + escapeHtml(theme.id) + '" style="' + themeVars(theme) + '">' +
     body + '</main></body></html>';
+}
+
+function summaryBullets(value, maxItems = 3) {
+  const text = String(value || '').trim();
+  if (!text) return [];
+  const parts = text
+    .split(/(?<=[.!?])\s+/)
+    .map(s => s.trim())
+    .filter(Boolean);
+  return parts.slice(0, maxItems);
+}
+
+function renderBullets(value, maxItems = 3) {
+  return summaryBullets(value, maxItems).map(function(item) {
+    return '<li>' + escapeHtml(clampText(item, 185)) + '</li>';
+  }).join('');
 }
 
 function topbar(theme, date) {
@@ -108,15 +124,16 @@ function coverSlide(css, theme, pkg) {
 }
 
 function storySlide(css, theme, pkg, story, index) {
+  const bullets = renderBullets(story.summary, 3);
   const body = topbar(theme, pkg.date) +
-    '<section class="center-panel">' +
+    '<section class="center-panel story-panel">' +
       '<div class="story-number">STORY ' + String(index).padStart(2,'0') + ' / 05</div>' +
-      '<div class="story-headline">' + escapeHtml(clampText(story.headline, 110)) + '</div>' +
+      '<div class="story-headline">' + escapeHtml(clampText(story.headline, 125)) + '</div>' +
       '<div class="rule"></div>' +
       '<div class="label">WHAT HAPPENED</div>' +
-      '<div class="copy">' + escapeHtml(clampText(story.summary, 310)) + '</div>' +
-      '<div class="why"><div class="label">WHY IT MATTERS</div><div class="copy">' +
-        escapeHtml(clampText(story.whyItMatters, 250)) +
+      '<ul class="story-bullets">' + bullets + '</ul>' +
+      '<div class="why-card"><div class="label">KEY TAKEAWAY</div><div class="copy">' +
+        escapeHtml(clampText(story.whyItMatters, 260)) +
       '</div></div>' +
       '<div class="source"><span>Source</span><strong>' + escapeHtml(story.sourceName) + '</strong></div>' +
     '</section>' +
@@ -126,24 +143,23 @@ function storySlide(css, theme, pkg, story, index) {
 }
 
 function finalSlide(css, theme, pkg, social) {
-  const items = pkg.stories.map(function(story, i) {
-    return '<div class="final-item"><div class="final-index">0' + (i+1) + '</div><div class="final-text">' +
-      escapeHtml(clampText(story.headline, 92)) + '</div></div>';
-  }).join('');
   const body = topbar(theme, pkg.date) +
-    '<div class="page-title">' +
-      '<div class="kicker">THE DAILY TAKEAWAY</div>' +
-      '<div class="cover-title" style="font-size:68px">WHAT TO <span>WATCH NEXT</span></div>' +
-      '<div class="small-note">The five signals worth carrying into your day.</div>' +
-      '<div class="final-list">' + items + '</div>' +
-      '<div class="cta cross-cta">' +
-        '<div>INSTAGRAM <strong>' + escapeHtml(social.instagram.handle) + '</strong></div>' +
-        '<div>X <strong>' + escapeHtml(social.x.handle) + '</strong></div>' +
-        '<div>THREADS <strong>' + escapeHtml(social.threads.handle) + '</strong></div>' +
-        '<div>YOUTUBE <strong>' + escapeHtml(social.youtube.channelName) + '</strong></div>' +
+    '<div class="final-page">' +
+      '<div class="kicker">EVERYDAY AI DESK</div>' +
+      '<div class="final-title">FOLLOW FOR <span>DAILY AI UPDATES</span></div>' +
+      '<div class="final-subtitle">News • Tools • Tips • Real Use Cases</div>' +
+      '<div class="social-cta">' +
+        '<div class="social-row instagram"><span class="social-badge">IG</span><div><div class="social-label">INSTAGRAM</div><div class="social-handle">' + escapeHtml(social.instagram.handle) + '</div></div></div>' +
+        '<div class="social-row x"><span class="social-badge">X</span><div><div class="social-label">X</div><div class="social-handle">' + escapeHtml(social.x.handle) + '</div></div></div>' +
+        '<div class="social-row threads"><span class="social-badge">TH</span><div><div class="social-label">THREADS</div><div class="social-handle">' + escapeHtml(social.threads.handle) + '</div></div></div>' +
+        '<div class="social-row youtube"><span class="social-badge">YT</span><div><div class="social-label">YOUTUBE</div><div class="social-handle">' + escapeHtml(social.youtube.channelName) + '</div></div></div>' +
       '</div>' +
-    '</div>' + decorativeMarkup() +
-    '<div class="footer"><div class="footer-left"><span class="footer-dot"></span>AUTOMATE · LEARN · GROW</div><div class="footer-right">SEE YOU TOMORROW</div></div>';
+      '<div class="topic-strip">' +
+        '<span>✦ DAILY NEWS</span><span>✦ AI TOOLS</span><span>✦ TIPS &amp; TUTORIALS</span><span>✦ REAL USE CASES</span>' +
+      '</div>' +
+    '</div>' +
+    decorativeMarkup() +
+    '<div class="footer"><div class="footer-left"><span class="footer-dot"></span>FOLLOW · CONNECT · SUBSCRIBE</div><div class="footer-right">SEE YOU TOMORROW</div></div>';
   return baseHtml(css, theme, body);
 }
 
