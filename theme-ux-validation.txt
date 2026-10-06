@@ -1,2 +1,0 @@
-Validate reference-inspired carousel layout at 2026-10-06
-PDF extraction fix validation at 2026-10-06
