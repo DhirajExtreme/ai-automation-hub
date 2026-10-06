@@ -204,7 +204,7 @@ export async function renderCarousel(pkg) {
     }
 
     const pdfBody = htmlPages.map(function(html) {
-      const start = html.indexOf('<main class="slide"');
+      const start = html.indexOf('<main class="slide');
       const end = html.indexOf('</main>');
       if (start < 0 || end < 0) throw new Error('Unable to extract slide markup for PDF');
       return '<section class="pdf-slide">' + html.slice(start, end + '</main>'.length) + '</section>';
