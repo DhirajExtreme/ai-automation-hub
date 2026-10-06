@@ -1,6 +1,9 @@
 name: Daily AI News
 
 on:
+  push:
+    paths:
+      - 'theme-ux-validation.txt'
   workflow_dispatch:
     inputs:
       render_carousel:
