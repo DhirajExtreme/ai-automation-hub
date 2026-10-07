@@ -13,6 +13,11 @@ on:
         required: false
         default: false
         type: boolean
+      publish_threads:
+        description: 'Publish carousel to Threads'
+        required: false
+        default: false
+        type: boolean
   schedule:
     # Daily production run at 08:05 IST = 02:35 UTC.
     # Five minutes past the hour reduces the chance of GitHub scheduler
@@ -39,6 +44,9 @@ jobs:
       INSTAGRAM_API_VERSION: 'v26.0'
       PUBLIC_ASSET_BASE_URL: ${{ vars.PUBLIC_ASSET_BASE_URL }}
 
+      THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+      THREADS_API_BASE_URL: 'https://graph.threads.net'
+
       YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
       YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
       YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
@@ -47,6 +55,7 @@ jobs:
       DRY_RUN: ${{ github.event_name == 'schedule' && 'false' || 'true' }}
       RENDER_CAROUSEL: ${{ github.event_name == 'workflow_dispatch' && inputs.render_carousel || 'true' }}
       PUBLISH_INSTAGRAM: ${{ github.event_name == 'schedule' && 'true' || (github.event_name == 'workflow_dispatch' && inputs.publish_instagram || 'false') }}
+      PUBLISH_THREADS: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_threads || 'false' }}
 
     steps:
       - uses: actions/checkout@v4
