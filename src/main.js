@@ -52,7 +52,7 @@ await fs.writeFile(
 console.log('Validated ' + pkg.stories.length + ' stories for ' + pkg.date);
 console.log('Dry run: ' + dryRun);
 console.log('HTML/CSS carousel render: ' + renderEnabled);
-console.log('Instagram publish: ' + publishInstagramEnabled);
+console.log('Instagram publish requested: ' + publishInstagramEnabled);
 
 let manifest = null;
 
@@ -62,25 +62,5 @@ if (renderEnabled) {
 }
 
 if (publishInstagramEnabled) {
-  if (!manifest) throw new Error('Instagram publishing requires RENDER_CAROUSEL=true');
-
-  const baseUrl = process.env.PUBLIC_ASSET_BASE_URL;
-  if (!baseUrl) {
-    throw new Error(
-      'PUBLIC_ASSET_BASE_URL is required for Instagram publishing. ' +
-      'Meta must be able to fetch public HTTPS image URLs.'
-    );
-  }
-
-  const imageUrls = manifest.files.map(function(filePath) {
-    const relative = filePath.replaceAll('\\\\', '/');
-    return baseUrl.replace(/\/$/, '') + '/' + relative.replace(/^artifacts\//, '');
-  });
-
-  const published = await publishCarousel(imageUrls, pkg.instagram.caption);
-  await fs.writeFile(
-    outputDir + '/instagram-publish.json',
-    JSON.stringify(published, null, 2)
-  );
-  console.log('Instagram carousel published: ' + (published.id || 'ok'));
+  console.log('Instagram publish is deferred until after GitHub Pages deployment.');
 }
