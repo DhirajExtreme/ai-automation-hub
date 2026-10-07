@@ -1,3 +1,0 @@
-Validate post-deployment Instagram publishing order 2026-10-07
-Second commit to trigger validation.
-Corrected publish run at 2026-10-07T11:05 IST
