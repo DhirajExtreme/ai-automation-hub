@@ -14,9 +14,10 @@ on:
         default: false
         type: boolean
   schedule:
-    # Daily production run at 08:00 Asia/Kolkata.
-    - cron: '0 8 * * *'
-      timezone: 'Asia/Kolkata'
+    # Daily production run at 08:05 IST = 02:35 UTC.
+    # Five minutes past the hour reduces the chance of GitHub scheduler
+    # congestion/dropped runs compared with an exact top-of-hour schedule.
+    - cron: '35 2 * * *'
 
 permissions:
   contents: read
@@ -43,9 +44,9 @@ jobs:
       YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
       YOUTUBE_PRIVACY: 'private'
 
-      DRY_RUN: 'true'
+      DRY_RUN: ${{ github.event_name == 'schedule' && 'false' || 'true' }}
       RENDER_CAROUSEL: ${{ github.event_name == 'workflow_dispatch' && inputs.render_carousel || 'true' }}
-      PUBLISH_INSTAGRAM: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_instagram || 'false' }}
+      PUBLISH_INSTAGRAM: ${{ github.event_name == 'schedule' && 'true' || (github.event_name == 'workflow_dispatch' && inputs.publish_instagram || 'false') }}
 
     steps:
       - uses: actions/checkout@v4
