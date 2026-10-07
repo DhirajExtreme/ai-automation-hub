@@ -49,7 +49,7 @@ jobs:
 
       DRY_RUN: ${{ github.event_name == 'schedule' && 'false' || 'true' }}
       RENDER_CAROUSEL: ${{ github.event_name == 'workflow_dispatch' && inputs.render_carousel || 'true' }}
-      PUBLISH_INSTAGRAM: ${{ github.event_name == 'schedule' && 'true' || (github.event_name == 'workflow_dispatch' && inputs.publish_instagram || 'false') }}
+      PUBLISH_INSTAGRAM: ${{ (github.event_name == 'schedule' || github.event_name == 'push') && 'true' || (github.event_name == 'workflow_dispatch' && inputs.publish_instagram || 'false') }}
 
     steps:
       - uses: actions/checkout@v4
