@@ -61,6 +61,8 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Generate editorial package and carousel
+        env:
+          PUBLISH_INSTAGRAM: 'false'
         run: npm run run
 
       - name: Prepare GitHub Pages assets
@@ -102,3 +104,7 @@ jobs:
         uses: actions/deploy-pages@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish carousel to Instagram after Pages deployment
+        if: env.PUBLISH_INSTAGRAM == 'true'
+        run: npm run publish-instagram
