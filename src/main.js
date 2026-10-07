@@ -12,6 +12,15 @@ const outputDir = 'artifacts';
 const social = JSON.parse(await fs.readFile('config/social.json', 'utf8'));
 const crossPlatformCta = social.crossPlatformCta;
 
+function todayInIndia() {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).format(new Date());
+}
+
 function enforceCrossPlatformCta(pkg) {
   if (pkg?.instagram) {
     const caption = String(pkg.instagram.caption || '').trim();
@@ -30,6 +39,9 @@ function enforceCrossPlatformCta(pkg) {
 
 const research = await collectResearch();
 const pkg = enforceCrossPlatformCta(await generateEditorialPackage(research));
+// Keep the production label tied to the actual India calendar date instead
+// of relying on a model-generated date that can lag by one day.
+pkg.date = todayInIndia();
 validatePackage(pkg);
 
 await fs.mkdir(outputDir, {recursive:true});
